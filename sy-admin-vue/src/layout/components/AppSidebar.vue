@@ -10,7 +10,7 @@ const appStore = useAppStore();
     <div class="app-sidebar__brand">
       <div class="app-sidebar__logo">EA</div>
       <div v-show="!appStore.sidebarCollapsed" class="app-sidebar__meta">
-        <div class="app-sidebar__name">Exercise Admin</div>
+        <div class="app-sidebar__name">Sy Admin</div>
         <div class="app-sidebar__tag">Vue 3 + Vite</div>
       </div>
     </div>
