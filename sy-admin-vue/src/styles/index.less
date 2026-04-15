@@ -1,0 +1,36 @@
+@import './reset.less';
+@import './theme.less';
+@import './variables.css';
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    'Segoe UI',
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.45);
+  background-clip: content-box;
+}
+
+.el-card {
+  border-color: var(--app-border-color);
+}
