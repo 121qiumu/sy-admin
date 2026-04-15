@@ -1,21 +1,17 @@
-import { http } from '@/http';
+import { request } from '@/http';
 
 export function getProfile() {
-  return http.get('/admin/base/comm/person');
+  return request.get('/admin/base/comm/person');
 }
 
 export function getPermMenu() {
-  return http.get('/admin/base/comm/permmenu');
+  return request.get('/admin/base/comm/permmenu');
 }
 
 export function uploadFile(data) {
-  return http.post('/admin/base/comm/upload', data, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return request.upload('/admin/base/comm/upload', data);
 }
 
 export function getUploadMode() {
-  return http.get('/admin/base/comm/uploadMode');
+  return request.get('/admin/base/comm/uploadMode');
 }

@@ -5,5 +5,7 @@ coverage
 .idea
 .vscode/*
 !.vscode/extensions.json
+auto-imports.d.ts
 components.d.ts
+.eslintrc-auto-import.json
 .husky/_

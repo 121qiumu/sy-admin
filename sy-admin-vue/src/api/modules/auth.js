@@ -1,17 +1,28 @@
-import { http } from '@/http';
+import { request } from '@/http';
 
 export function getCaptcha(params) {
-  return http.get('/admin/base/open/captcha', { params });
+  return request.get('/admin/base/open/captcha', {
+    params,
+    skipAuthRedirect: true,
+    withToken: false,
+  });
 }
 
 export function login(data) {
-  return http.post('/admin/base/open/login', data);
+  return request.post('/admin/base/open/login', data, {
+    skipAuthRedirect: true,
+    withToken: false,
+  });
 }
 
 export function refreshToken(params) {
-  return http.get('/admin/base/open/refreshToken', { params });
+  return request.get('/admin/base/open/refreshToken', {
+    params,
+    skipAuthRedirect: true,
+    withToken: false,
+  });
 }
 
 export function logout() {
-  return http.post('/admin/base/comm/logout');
+  return request.post('/admin/base/comm/logout');
 }

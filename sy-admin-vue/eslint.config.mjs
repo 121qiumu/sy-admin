@@ -3,6 +3,29 @@ import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
+const autoImportGlobals = {
+  computed: 'readonly',
+  defineStore: 'readonly',
+  ElLoading: 'readonly',
+  ElMessage: 'readonly',
+  ElMessageBox: 'readonly',
+  ElNotification: 'readonly',
+  nextTick: 'readonly',
+  onMounted: 'readonly',
+  onUnmounted: 'readonly',
+  reactive: 'readonly',
+  readonly: 'readonly',
+  ref: 'readonly',
+  shallowRef: 'readonly',
+  storeToRefs: 'readonly',
+  toRefs: 'readonly',
+  unref: 'readonly',
+  useRoute: 'readonly',
+  useRouter: 'readonly',
+  watch: 'readonly',
+  watchEffect: 'readonly',
+};
+
 export default [
   {
     ignores: ['dist/**', 'node_modules/**', '.husky/**'],
@@ -15,6 +38,7 @@ export default [
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
+        ...autoImportGlobals,
         ...globals.browser,
         ...globals.node,
       },
@@ -29,6 +53,7 @@ export default [
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
+        ...autoImportGlobals,
         ...globals.browser,
       },
     },

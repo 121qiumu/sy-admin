@@ -10,7 +10,7 @@ import { availablePort } from '../comm/port';
 
 export default {
   // 确保每个项目唯一，项目首次启动会自动生成
-  keys: 'cool-admin-keys-xxxxxx',
+  keys: 'e33a6e97-dfe7-4a18-b82b-8ec089c900a0',
   koa: {
     port: availablePort(8001),
   },
