@@ -9,6 +9,10 @@ const appStore = useAppStore();
 const authStore = useAuthStore();
 const logoutLoading = ref(false);
 
+function handleThemeToggle() {
+  appStore.toggleTheme();
+}
+
 async function handleLogout() {
   try {
     await ElMessageBox.confirm('确认退出当前登录账号吗？', '退出登录', {
@@ -35,7 +39,7 @@ async function handleLogout() {
 <template>
   <div class="app-header">
     <div class="app-header__left">
-      <el-button class="app-header__icon" text @click="appStore.toggleSidebar">
+      <el-button class="app-header__icon" text @click="appStore.toggleSidebar()">
         <IconEpExpand v-if="appStore.sidebarCollapsed" />
         <IconEpFold v-else />
       </el-button>
@@ -47,7 +51,7 @@ async function handleLogout() {
 
     <div class="app-header__right">
       <el-tooltip content="切换明暗主题" placement="bottom">
-        <el-button class="app-header__icon" text @click="appStore.toggleTheme">
+        <el-button class="app-header__icon" text @click="handleThemeToggle">
           <IconEpMoon v-if="appStore.theme === 'light'" />
           <IconEpSunny v-else />
         </el-button>
