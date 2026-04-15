@@ -1,17 +1,17 @@
 import { request } from '@/http';
 
-export function getProfile() {
-  return request.get('/admin/base/comm/person');
+export function getProfile(config = {}) {
+  return request.get('/admin/base/comm/person', config);
 }
 
-export function getPermMenu() {
-  return request.get('/admin/base/comm/permmenu');
+export function getPermMenu(config = {}) {
+  return request.get('/admin/base/comm/permmenu', config);
 }
 
-export function uploadFile(data) {
-  return request.upload('/admin/base/comm/upload', data);
+export function uploadFile(data, config = {}) {
+  return request.upload('/admin/base/comm/upload', data, config);
 }
 
-export function getUploadMode() {
-  return request.get('/admin/base/comm/uploadMode');
+export function getUploadMode(config = {}) {
+  return request.get('/admin/base/comm/uploadMode', config);
 }

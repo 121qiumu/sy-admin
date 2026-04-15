@@ -1,50 +1,87 @@
+<script setup>
+import { useAuthStore } from '@/stores/modules/auth';
+
+const authStore = useAuthStore();
+
+const profileItems = computed(() => {
+  return [
+    {
+      label: '用户名',
+      value: authStore.userInfo?.username || '-',
+    },
+    {
+      label: '昵称',
+      value: authStore.userInfo?.nickName || authStore.userInfo?.name || '-',
+    },
+    {
+      label: '手机号',
+      value: authStore.userInfo?.phone || '-',
+    },
+    {
+      label: '邮箱',
+      value: authStore.userInfo?.email || '-',
+    },
+  ];
+});
+</script>
+
 <template>
   <section class="dashboard-page">
     <div class="dashboard-page__hero">
-      <p class="dashboard-page__eyebrow">Project Bootstrap</p>
-      <h1 class="dashboard-page__title">前端工程骨架已初始化</h1>
+      <p class="dashboard-page__eyebrow">Authenticated Session</p>
+      <h1 class="dashboard-page__title">登录认证闭环已接入</h1>
       <p class="dashboard-page__desc">
-        当前阶段只完成工程化配置、主题体系、基础布局、路由与状态管理底座，业务模块会在后续步骤逐步接入。
+        当前已完成基于真实后端接口的登录、验证码、token 存储、当前用户信息获取、退出登录与登录失效处理。
       </p>
-      <div class="dashboard-page__tags">
-        <el-tag>Vue 3</el-tag>
-        <el-tag type="success">Vite</el-tag>
-        <el-tag type="warning">Pinia</el-tag>
-        <el-tag type="info">Axios</el-tag>
+
+      <div class="dashboard-page__summary">
+        <div class="dashboard-page__summary-item">
+          <span class="dashboard-page__summary-label">当前用户</span>
+          <strong>{{ authStore.displayName }}</strong>
+        </div>
+        <div class="dashboard-page__summary-item">
+          <span class="dashboard-page__summary-label">登录状态</span>
+          <strong>{{ authStore.hasToken ? '已登录' : '未登录' }}</strong>
+        </div>
       </div>
     </div>
 
     <el-row :gutter="16">
-      <el-col :xs="24" :md="12" :xl="8">
+      <el-col :xs="24" :lg="12">
         <el-card class="dashboard-card" shadow="hover">
-          <template #header>已接入能力</template>
-          <ul class="dashboard-list">
-            <li>基础布局壳子</li>
-            <li>路由与守卫骨架</li>
-            <li>Pinia 状态模块</li>
-            <li>Axios 请求封装</li>
-            <li>Element Plus 按需加载</li>
-            <li>明暗主题切换</li>
-          </ul>
+          <template #header>当前用户信息</template>
+
+          <el-descriptions :column="1" border>
+            <el-descriptions-item
+              v-for="item in profileItems"
+              :key="item.label"
+              :label="item.label"
+            >
+              {{ item.value }}
+            </el-descriptions-item>
+          </el-descriptions>
         </el-card>
       </el-col>
 
-      <el-col :xs="24" :md="12" :xl="8">
+      <el-col :xs="24" :lg="12">
         <el-card class="dashboard-card" shadow="hover">
-          <template #header>下一步建议</template>
-          <ul class="dashboard-list">
-            <li>接入真实登录与验证码</li>
-            <li>打通当前用户与权限菜单</li>
-            <li>完成基础 Layout 与动态菜单</li>
-            <li>落首批系统管理模块</li>
-          </ul>
-        </el-card>
-      </el-col>
+          <template #header>当前认证能力</template>
 
-      <el-col :xs="24" :xl="8">
-        <el-card class="dashboard-card" shadow="hover">
-          <template #header>联调约定</template>
-          <el-alert title="Authorization 直接传原始 token，不带 Bearer 前缀。" type="info" :closable="false" />
+          <ul class="dashboard-list">
+            <li>登录页表单校验</li>
+            <li>验证码接口联调</li>
+            <li>token 与 refreshToken 本地持久化</li>
+            <li>当前用户信息初始化</li>
+            <li>退出登录与登录失效跳转</li>
+            <li>路由白名单基础处理</li>
+          </ul>
+
+          <el-alert
+            class="dashboard-alert"
+            title="菜单权限与动态路由仍留在后续步骤处理，本步只完成认证闭环。"
+            type="info"
+            :closable="false"
+          />
         </el-card>
       </el-col>
     </el-row>
@@ -84,17 +121,32 @@
 }
 
 .dashboard-page__desc {
-  max-width: 720px;
+  max-width: 760px;
   margin: 14px 0 0;
   color: var(--app-text-secondary);
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-.dashboard-page__tags {
+.dashboard-page__summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.dashboard-page__summary-item {
+  min-width: 180px;
+  padding: 14px 16px;
+  border: 1px solid var(--app-border-color);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--app-surface-color) 86%, transparent);
+}
+
+.dashboard-page__summary-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--app-text-secondary);
 }
 
 .dashboard-card {
@@ -107,5 +159,9 @@
   padding-left: 18px;
   color: var(--app-text-secondary);
   line-height: 1.9;
+}
+
+.dashboard-alert {
+  margin-top: 20px;
 }
 </style>
