@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/modules/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 
-async function handleBack() {
+async function backToSafePage() {
   if (authStore.hasToken) {
     await router.replace('/dashboard');
     return;
@@ -19,12 +19,12 @@ async function handleBack() {
 <template>
   <section class="error-page">
     <el-result
-      icon="warning"
-      title="404"
-      sub-title="页面不存在，或者对应业务页面还没有接入。"
+      icon="error"
+      title="403"
+      sub-title="当前账号没有访问这个页面的权限。"
     >
       <template #extra>
-        <el-button type="primary" @click="handleBack">返回上一入口</el-button>
+        <el-button type="primary" @click="backToSafePage">返回安全页面</el-button>
       </template>
     </el-result>
   </section>

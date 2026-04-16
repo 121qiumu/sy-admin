@@ -5,6 +5,17 @@ import { getStorage, removeStorage, setStorage } from '@/utils/storage';
 
 let profilePromise = null;
 
+async function resetPermissionSession() {
+  const [{ usePermissionStore }, { router }, { pinia }] = await Promise.all([
+    import('@/stores/modules/permission'),
+    import('@/router'),
+    import('@/stores'),
+  ]);
+  const permissionStore = usePermissionStore(pinia);
+
+  permissionStore.resetPermissionState(router);
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(getStorage(STORAGE_KEYS.token, ''));
   const refreshToken = ref(getStorage(STORAGE_KEYS.refreshToken, ''));
@@ -134,6 +145,7 @@ export const useAuthStore = defineStore('auth', () => {
       return result;
     } catch (error) {
       clearAuth();
+      await resetPermissionSession();
       throw error;
     } finally {
       loginLoading.value = false;
@@ -154,6 +166,7 @@ export const useAuthStore = defineStore('auth', () => {
       // Ignore logout request errors and always clear local auth state.
     } finally {
       clearAuth();
+      await resetPermissionSession();
     }
   }
 

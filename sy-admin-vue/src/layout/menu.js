@@ -1,7 +1,20 @@
-export const shellMenus = [
-  {
-    path: '/dashboard',
-    title: '工作台',
-    icon: 'home',
-  },
-];
+export const HOME_MENU_ITEM = {
+  id: '__dashboard__',
+  parentId: null,
+  name: '工作台',
+  menuKey: 'menu-dashboard',
+  router: '/dashboard',
+  routePath: '/dashboard',
+  perms: null,
+  permissionCodes: [],
+  type: 1,
+  icon: 'home',
+  orderNum: -1,
+  viewPath: '/src/views/dashboard/index.vue',
+  keepAlive: true,
+  isShow: true,
+  hiddenInMenu: false,
+  externalLink: '',
+  buttonMenus: [],
+  children: [],
+};

@@ -45,7 +45,7 @@ async function handleLogout() {
       </el-button>
       <div>
         <div class="app-header__title">{{ appConfig.title }}</div>
-        <div class="app-header__subtitle">Step 4: 登录认证闭环</div>
+        <div class="app-header__subtitle">Step 5: 权限系统闭环</div>
       </div>
     </div>
 

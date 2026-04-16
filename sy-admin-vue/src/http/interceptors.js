@@ -20,6 +20,13 @@ function getAuthStore() {
   return useAuthStore(pinia);
 }
 
+async function resetPermissionSession() {
+  const { usePermissionStore } = await import('@/stores/modules/permission');
+  const permissionStore = usePermissionStore(pinia);
+
+  permissionStore.resetPermissionState(router);
+}
+
 function redirectToLogin() {
   const currentRoute = router.currentRoute.value;
   const currentPath = currentRoute?.fullPath || `${window.location.pathname}${window.location.search}`;
@@ -79,7 +86,7 @@ function handleBusinessResponse(response) {
   return Promise.reject(businessError);
 }
 
-function handleHttpError(error) {
+async function handleHttpError(error) {
   if (isCancelRequest(error)) {
     return Promise.reject(error);
   }
@@ -99,6 +106,7 @@ function handleHttpError(error) {
 
     if (status === 401) {
       authStore.clearAuth();
+      await resetPermissionSession();
       message = responseMessage || getHttpStatusMessage(status);
 
       if (requestOptions.skipAuthRedirect !== true) {

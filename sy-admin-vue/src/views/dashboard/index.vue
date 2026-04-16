@@ -1,7 +1,10 @@
 <script setup>
 import { useAuthStore } from '@/stores/modules/auth';
+import { usePermissionStore } from '@/stores/modules/permission';
+import { hasPermission } from '@/utils/permission';
 
 const authStore = useAuthStore();
+const permissionStore = usePermissionStore();
 
 const profileItems = computed(() => {
   return [
@@ -10,7 +13,7 @@ const profileItems = computed(() => {
       value: authStore.userInfo?.username || '-',
     },
     {
-      label: '昵称',
+      label: '显示名称',
       value: authStore.userInfo?.nickName || authStore.userInfo?.name || '-',
     },
     {
@@ -23,15 +26,34 @@ const profileItems = computed(() => {
     },
   ];
 });
+
+const capabilityItems = computed(() => {
+  return [
+    '真实菜单接口对接',
+    '动态路由按权限注入',
+    '路由守卫区分 403 / 404',
+    '按钮权限指令与权限判断函数',
+    '侧边栏按菜单树动态渲染',
+  ];
+});
+
+function handlePermissionDemo(title, requiredPermission) {
+  if (!hasPermission(requiredPermission)) {
+    ElMessage.warning(`缺少权限：${requiredPermission}`);
+    return;
+  }
+
+  ElMessage.success(`权限校验通过：${title}`);
+}
 </script>
 
 <template>
   <section class="dashboard-page">
     <div class="dashboard-page__hero">
-      <p class="dashboard-page__eyebrow">Authenticated Session</p>
-      <h1 class="dashboard-page__title">登录认证闭环已接入</h1>
+      <p class="dashboard-page__eyebrow">Permission Workspace</p>
+      <h1 class="dashboard-page__title">权限系统闭环已接入</h1>
       <p class="dashboard-page__desc">
-        当前已完成基于真实后端接口的登录、验证码、token 存储、当前用户信息获取、退出登录与登录失效处理。
+        当前项目已经从“登录认证”推进到“菜单、路由、按钮权限”阶段。业务页面暂时仍用占位页承接，但权限链路已经是真实可扩展的。
       </p>
 
       <div class="dashboard-page__summary">
@@ -40,8 +62,12 @@ const profileItems = computed(() => {
           <strong>{{ authStore.displayName }}</strong>
         </div>
         <div class="dashboard-page__summary-item">
-          <span class="dashboard-page__summary-label">登录状态</span>
-          <strong>{{ authStore.hasToken ? '已登录' : '未登录' }}</strong>
+          <span class="dashboard-page__summary-label">权限点数量</span>
+          <strong>{{ permissionStore.perms.length }}</strong>
+        </div>
+        <div class="dashboard-page__summary-item">
+          <span class="dashboard-page__summary-label">侧边菜单数量</span>
+          <strong>{{ permissionStore.navigationMenus.length }}</strong>
         </div>
       </div>
     </div>
@@ -65,23 +91,32 @@ const profileItems = computed(() => {
 
       <el-col :xs="24" :lg="12">
         <el-card class="dashboard-card" shadow="hover">
-          <template #header>当前认证能力</template>
+          <template #header>当前权限能力</template>
 
           <ul class="dashboard-list">
-            <li>登录页表单校验</li>
-            <li>验证码接口联调</li>
-            <li>token 与 refreshToken 本地持久化</li>
-            <li>当前用户信息初始化</li>
-            <li>退出登录与登录失效跳转</li>
-            <li>路由白名单基础处理</li>
+            <li v-for="item in capabilityItems" :key="item">{{ item }}</li>
           </ul>
 
-          <el-alert
-            class="dashboard-alert"
-            title="菜单权限与动态路由仍留在后续步骤处理，本步只完成认证闭环。"
-            type="info"
-            :closable="false"
-          />
+          <el-divider content-position="left">按钮权限示例</el-divider>
+
+          <div class="dashboard-page__button-demo">
+            <el-button
+              v-permission="'base:sys:user:page'"
+              type="primary"
+              @click="handlePermissionDemo('用户列表查询', 'base:sys:user:page')"
+            >
+              用户列表查询
+            </el-button>
+            <el-button
+              v-permission="'base:sys:role:add'"
+              @click="handlePermissionDemo('角色新增', 'base:sys:role:add')"
+            >
+              角色新增
+            </el-button>
+            <el-button @click="ElMessage.info('这个按钮对所有已登录用户可见')">
+              通用操作
+            </el-button>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -161,7 +196,9 @@ const profileItems = computed(() => {
   line-height: 1.9;
 }
 
-.dashboard-alert {
-  margin-top: 20px;
+.dashboard-page__button-demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 </style>

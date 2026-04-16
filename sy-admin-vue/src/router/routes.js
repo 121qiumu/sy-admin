@@ -1,5 +1,10 @@
 import Layout from '@/layout/index.vue';
 
+export const ROOT_ROUTE_NAME = 'RootLayout';
+export const CATCH_ALL_ROUTE_NAME = 'PathFallback';
+export const FORBIDDEN_PATH = '/403';
+export const NOT_FOUND_PATH = '/404';
+
 export const routes = [
   {
     path: '/login',
@@ -12,6 +17,7 @@ export const routes = [
   },
   {
     path: '/',
+    name: ROOT_ROUTE_NAME,
     component: Layout,
     redirect: '/dashboard',
     meta: {
@@ -25,13 +31,24 @@ export const routes = [
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
           title: '工作台',
-          icon: 'dashboard',
+          icon: 'home',
+          keepAlive: true,
+          requiresAuth: true,
         },
       },
     ],
   },
   {
-    path: '/404',
+    path: FORBIDDEN_PATH,
+    name: 'Forbidden',
+    component: () => import('@/views/error/403.vue'),
+    meta: {
+      title: '无权限访问',
+      public: true,
+    },
+  },
+  {
+    path: NOT_FOUND_PATH,
     name: 'NotFound',
     component: () => import('@/views/error/404.vue'),
     meta: {
@@ -41,6 +58,11 @@ export const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/404',
+    name: CATCH_ALL_ROUTE_NAME,
+    component: () => import('@/views/error/404.vue'),
+    meta: {
+      title: '页面不存在',
+      requiresAuth: true,
+    },
   },
 ];

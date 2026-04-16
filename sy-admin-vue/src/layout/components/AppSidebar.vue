@@ -1,17 +1,26 @@
 <script setup>
-import { shellMenus } from '@/layout/menu';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { appConfig } from '@/config';
 import { useAppStore } from '@/stores/modules/app';
+import { usePermissionStore } from '@/stores/modules/permission';
+import AppSidebarItem from './AppSidebarItem.vue';
 
+const route = useRoute();
 const appStore = useAppStore();
+const permissionStore = usePermissionStore();
+
+const navigationMenus = computed(() => permissionStore.navigationMenus);
+const defaultOpeneds = computed(() => permissionStore.resolveOpenKeys(route.path));
 </script>
 
 <template>
   <div class="app-sidebar">
     <div class="app-sidebar__brand">
-      <div class="app-sidebar__logo">EA</div>
+      <div class="app-sidebar__logo">SY</div>
       <div v-show="!appStore.sidebarCollapsed" class="app-sidebar__meta">
-        <div class="app-sidebar__name">Sy Admin</div>
-        <div class="app-sidebar__tag">Vue 3 + Vite</div>
+        <div class="app-sidebar__name">{{ appConfig.title }}</div>
+        <div class="app-sidebar__tag">Permission Ready</div>
       </div>
     </div>
 
@@ -20,13 +29,11 @@ const appStore = useAppStore();
         :collapse="appStore.sidebarCollapsed"
         :collapse-transition="false"
         :default-active="$route.path"
+        :default-openeds="defaultOpeneds"
         class="app-sidebar__menu"
-        router
+        unique-opened
       >
-        <el-menu-item v-for="item in shellMenus" :key="item.path" :index="item.path">
-          <IconEpHomeFilled />
-          <template #title>{{ item.title }}</template>
-        </el-menu-item>
+        <AppSidebarItem v-for="item in navigationMenus" :key="item.menuKey" :item="item" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -83,8 +90,13 @@ const appStore = useAppStore();
   background: transparent;
 }
 
-:deep(.el-menu-item) {
+:deep(.el-menu-item),
+:deep(.el-sub-menu__title) {
   margin: 4px 12px;
   border-radius: 12px;
+}
+
+:deep(.el-menu-item.is-active) {
+  background: color-mix(in srgb, var(--app-surface-color) 72%, #2563eb 28%);
 }
 </style>

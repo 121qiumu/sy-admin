@@ -1,6 +1,5 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
-import { appConfig } from '@/config';
 import { getCaptcha } from '@/api/modules/auth';
 import { useAppStore } from '@/stores/modules/app';
 import { useAuthStore } from '@/stores/modules/auth';
