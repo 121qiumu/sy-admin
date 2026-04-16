@@ -9,6 +9,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(['select']);
 
 const router = useRouter();
 
@@ -18,11 +19,13 @@ const iconComponent = computed(() => resolveMenuIcon(props.item.icon));
 function handleMenuClick() {
   if (props.item.externalLink) {
     window.open(props.item.externalLink, '_blank', 'noopener');
+    emit('select', props.item);
     return;
   }
 
   if (props.item.routePath) {
     router.push(props.item.routePath);
+    emit('select', props.item);
   }
 }
 </script>
@@ -34,7 +37,12 @@ function handleMenuClick() {
       <span>{{ item.name }}</span>
     </template>
 
-    <AppSidebarItem v-for="child in item.children" :key="child.menuKey" :item="child" />
+    <AppSidebarItem
+      v-for="child in item.children"
+      :key="child.menuKey"
+      :item="child"
+      @select="emit('select', $event)"
+    />
   </el-sub-menu>
 
   <el-menu-item v-else :index="item.routePath || item.menuKey" @click="handleMenuClick">

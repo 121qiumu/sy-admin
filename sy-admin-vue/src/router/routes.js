@@ -1,4 +1,4 @@
-import Layout from '@/layout/index.vue';
+import AdminLayout from '@/layout/AdminLayout.vue';
 
 export const ROOT_ROUTE_NAME = 'RootLayout';
 export const CATCH_ALL_ROUTE_NAME = 'PathFallback';
@@ -18,7 +18,7 @@ export const routes = [
   {
     path: '/',
     name: ROOT_ROUTE_NAME,
-    component: Layout,
+    component: AdminLayout,
     redirect: '/dashboard',
     meta: {
       title: '后台工作台',

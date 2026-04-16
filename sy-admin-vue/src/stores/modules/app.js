@@ -9,6 +9,8 @@ export const useAppStore = defineStore('app', {
     title: appConfig.title,
     theme: getStorage(STORAGE_KEYS.theme, DEFAULT_THEME),
     sidebarCollapsed: getStorage(STORAGE_KEYS.sidebarCollapsed, 'false') === 'true',
+    isMobile: false,
+    sidebarDrawerVisible: false,
   }),
   actions: {
     bootstrap() {
@@ -22,9 +24,33 @@ export const useAppStore = defineStore('app', {
     toggleTheme() {
       this.setTheme(this.theme === 'dark' ? 'light' : 'dark');
     },
-    toggleSidebar() {
-      this.sidebarCollapsed = !this.sidebarCollapsed;
+    setDeviceMode(isMobile) {
+      this.isMobile = Boolean(isMobile);
+
+      if (!this.isMobile) {
+        this.sidebarDrawerVisible = false;
+        return;
+      }
+
+      this.sidebarDrawerVisible = false;
+    },
+    setSidebarCollapsed(collapsed) {
+      this.sidebarCollapsed = Boolean(collapsed);
       setStorage(STORAGE_KEYS.sidebarCollapsed, String(this.sidebarCollapsed));
+    },
+    setSidebarDrawerVisible(visible) {
+      this.sidebarDrawerVisible = Boolean(visible);
+    },
+    closeSidebarDrawer() {
+      this.sidebarDrawerVisible = false;
+    },
+    toggleSidebar() {
+      if (this.isMobile) {
+        this.sidebarDrawerVisible = !this.sidebarDrawerVisible;
+        return;
+      }
+
+      this.setSidebarCollapsed(!this.sidebarCollapsed);
     },
   },
 });

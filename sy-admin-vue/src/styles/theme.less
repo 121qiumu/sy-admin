@@ -11,7 +11,43 @@ body {
 }
 
 .page-card {
+  border: 1px solid var(--app-border-color);
   border-radius: 20px;
   background: var(--app-surface-color);
   box-shadow: var(--app-card-shadow);
+  backdrop-filter: blur(var(--app-surface-blur));
+}
+
+.page-section-card {
+  border: 1px solid var(--app-border-color);
+  border-radius: var(--app-radius-xl);
+  background: var(--app-surface-color);
+  box-shadow: var(--app-card-shadow);
+}
+
+.page-grid-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--app-page-gap);
+}
+
+.page-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 960px) {
+  .page-grid-two {
+    grid-template-columns: 1fr;
+  }
 }

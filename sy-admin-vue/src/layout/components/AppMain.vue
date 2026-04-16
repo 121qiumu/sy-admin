@@ -6,6 +6,7 @@
           :is="Component"
           v-if="route.meta?.keepAlive"
           :key="route.name || route.path"
+          class="app-main__view"
         />
       </KeepAlive>
 
@@ -13,6 +14,7 @@
         :is="Component"
         v-if="!route.meta?.keepAlive"
         :key="route.fullPath"
+        class="app-main__view"
       />
     </RouterView>
   </div>
@@ -20,6 +22,10 @@
 
 <style scoped lang="less">
 .app-main {
-  min-height: calc(100vh - var(--app-header-height) - 40px);
+  min-height: var(--app-main-min-height);
+}
+
+.app-main__view {
+  min-height: var(--app-main-min-height);
 }
 </style>

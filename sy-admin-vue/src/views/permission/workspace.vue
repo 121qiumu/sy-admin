@@ -1,4 +1,5 @@
 <script setup>
+import PageContainer from '@/components/PageContainer.vue';
 import { useRoute } from 'vue-router';
 import { usePermissionStore } from '@/stores/modules/permission';
 
@@ -25,14 +26,14 @@ function handleMockAction(button) {
 </script>
 
 <template>
-  <section class="permission-workspace">
-    <div class="permission-workspace__hero page-card">
-      <p class="permission-workspace__eyebrow">Permission Page</p>
-      <h1 class="permission-workspace__title">{{ pageMeta.title || '权限页面' }}</h1>
-      <p class="permission-workspace__desc">
+  <PageContainer
+    eyebrow="Permission Page"
+    :title="pageMeta.title || '权限页面'"
+    description="
         当前阶段这里是通用占位页，用来承接菜单权限、页面级权限和按钮权限闭环。后续接入真实业务模块时，只需要把对应路由替换为真实页面组件。
-      </p>
-
+      "
+  >
+    <template #meta>
       <div class="permission-workspace__meta-grid">
         <div class="permission-workspace__meta-item">
           <span class="permission-workspace__meta-label">路由地址</span>
@@ -47,7 +48,7 @@ function handleMockAction(button) {
           <strong>{{ pageMeta.keepAlive ? '开启' : '关闭' }}</strong>
         </div>
       </div>
-    </div>
+    </template>
 
     <el-row :gutter="16">
       <el-col :xs="24" :lg="14">
@@ -137,39 +138,13 @@ function handleMockAction(button) {
         </el-card>
       </el-col>
     </el-row>
-  </section>
+  </PageContainer>
 </template>
 
 <style scoped lang="less">
 .permission-workspace {
   display: grid;
   gap: 16px;
-}
-
-.permission-workspace__hero {
-  padding: 28px;
-}
-
-.permission-workspace__eyebrow {
-  margin: 0 0 10px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--app-text-secondary);
-}
-
-.permission-workspace__title {
-  margin: 0;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.08;
-  color: var(--app-text-primary);
-}
-
-.permission-workspace__desc {
-  max-width: 760px;
-  margin: 14px 0 0;
-  color: var(--app-text-secondary);
-  line-height: 1.9;
 }
 
 .permission-workspace__meta-grid {
@@ -183,7 +158,7 @@ function handleMockAction(button) {
   padding: 14px 16px;
   border: 1px solid var(--app-border-color);
   border-radius: 18px;
-  background: color-mix(in srgb, var(--app-surface-color) 88%, transparent);
+  background: color-mix(in srgb, var(--app-surface-raised) 88%, transparent);
 }
 
 .permission-workspace__meta-label {

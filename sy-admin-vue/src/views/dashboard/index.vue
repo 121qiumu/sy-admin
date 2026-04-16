@@ -1,4 +1,5 @@
 <script setup>
+import PageContainer from '@/components/PageContainer.vue';
 import { useAuthStore } from '@/stores/modules/auth';
 import { usePermissionStore } from '@/stores/modules/permission';
 import { hasPermission } from '@/utils/permission';
@@ -48,14 +49,14 @@ function handlePermissionDemo(title, requiredPermission) {
 </script>
 
 <template>
-  <section class="dashboard-page">
-    <div class="dashboard-page__hero">
-      <p class="dashboard-page__eyebrow">Permission Workspace</p>
-      <h1 class="dashboard-page__title">权限系统闭环已接入</h1>
-      <p class="dashboard-page__desc">
+  <PageContainer
+    eyebrow="Admin Workspace"
+    title="企业后台基础布局已就绪"
+    description="
         当前项目已经从“登录认证”推进到“菜单、路由、按钮权限”阶段。业务页面暂时仍用占位页承接，但权限链路已经是真实可扩展的。
-      </p>
-
+      "
+  >
+    <template #meta>
       <div class="dashboard-page__summary">
         <div class="dashboard-page__summary-item">
           <span class="dashboard-page__summary-label">当前用户</span>
@@ -70,7 +71,7 @@ function handlePermissionDemo(title, requiredPermission) {
           <strong>{{ permissionStore.navigationMenus.length }}</strong>
         </div>
       </div>
-    </div>
+    </template>
 
     <el-row :gutter="16">
       <el-col :xs="24" :lg="12">
@@ -120,46 +121,13 @@ function handlePermissionDemo(title, requiredPermission) {
         </el-card>
       </el-col>
     </el-row>
-  </section>
+  </PageContainer>
 </template>
 
 <style scoped lang="less">
 .dashboard-page {
   display: grid;
   gap: 16px;
-}
-
-.dashboard-page__hero {
-  padding: 28px;
-  border: 1px solid var(--app-border-color);
-  border-radius: 24px;
-  background:
-    linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent 46%),
-    linear-gradient(160deg, rgba(15, 118, 110, 0.12), transparent 62%),
-    var(--app-surface-color);
-  box-shadow: var(--app-card-shadow);
-}
-
-.dashboard-page__eyebrow {
-  margin: 0 0 10px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--app-text-secondary);
-}
-
-.dashboard-page__title {
-  margin: 0;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.1;
-  color: var(--app-text-primary);
-}
-
-.dashboard-page__desc {
-  max-width: 760px;
-  margin: 14px 0 0;
-  color: var(--app-text-secondary);
-  line-height: 1.8;
 }
 
 .dashboard-page__summary {
@@ -174,7 +142,7 @@ function handlePermissionDemo(title, requiredPermission) {
   padding: 14px 16px;
   border: 1px solid var(--app-border-color);
   border-radius: 18px;
-  background: color-mix(in srgb, var(--app-surface-color) 86%, transparent);
+  background: color-mix(in srgb, var(--app-surface-raised) 88%, transparent);
 }
 
 .dashboard-page__summary-label {
@@ -200,5 +168,17 @@ function handlePermissionDemo(title, requiredPermission) {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+@media (max-width: 960px) {
+  .dashboard-page__summary-item {
+    min-width: calc(50% - 8px);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-page__summary-item {
+    min-width: 100%;
+  }
 }
 </style>
